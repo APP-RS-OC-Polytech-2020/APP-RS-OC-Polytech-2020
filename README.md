@@ -17,7 +17,6 @@ Télé-surveillance robotisée assistée par des objets connectés.
 * Fabien Lalande
 * Johann Pistorius
 * Tristan Grut
-* Hajar Bentahir
 
 ## Tuteurs
 * Flavien Vernier
