@@ -29,3 +29,6 @@ Téléprésence robotisée :
 
 Télésurveillance robotisée :
 > https://github.com/PacRobotic/Watch_Bot
+
+
+Image RPi sur C: poubelle image.img
