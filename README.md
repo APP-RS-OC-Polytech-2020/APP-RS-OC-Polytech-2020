@@ -9,6 +9,9 @@ Télé-surveillance robotisée assistée par des objets connectés.
   * Application permettant le déplacement autonome du robot, la détectetion de présence, la transmission au robot
 * Interface de contrôle (Alarme d'intrusion, affichage vidéo, contrôle du robot, contrôle des détecteurs, acquisition audio, retour vocale)
 
+## Documentation
+[Serveur Java](doc/index.html)
+
 ## Participants :
 * Thibaud Murtin
 * Franck Battu
