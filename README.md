@@ -10,7 +10,7 @@ Télé-surveillance robotisée assistée par des objets connectés.
 * Interface de contrôle (Alarme d'intrusion, affichage vidéo, contrôle du robot, contrôle des détecteurs, acquisition audio, retour vocale)
 
 ## Documentation
-[Serveur Java](doc/index.html)
+[Serveur Java](https://app-rs-oc-polytech-2020.github.io/Custodia/)
 
 ## Participants :
 * Thibaud Murtin
