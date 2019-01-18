@@ -1,4 +1,5 @@
 {
+	"type": "sensors",
     "data": {
         "mean": 0,
         "humidity": 0,
