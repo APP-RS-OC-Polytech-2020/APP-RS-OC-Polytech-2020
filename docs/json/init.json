@@ -1,0 +1,9 @@
+{
+    "type": "init",
+    "client": {
+        "name": "web"
+    },
+    "robot": {
+        "ip": ""
+    }
+}

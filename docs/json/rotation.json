@@ -1,0 +1,11 @@
+{
+    "manualMode": true,
+    "type": "command",
+    "mode": "rotation",
+    "data": {
+        "rotate": 0
+    },
+    "robot": {
+        "ip": ""
+    }
+}
