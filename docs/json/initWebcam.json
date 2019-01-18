@@ -1,0 +1,7 @@
+{	"type":"init",
+	"infoInit": "Coucou, j'ouvre un server, cya",
+    "clientName": "",
+    "clientType": "Webcam",
+    "ip": "",
+    "port": 0
+}
