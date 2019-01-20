@@ -25,6 +25,7 @@ Télé-surveillance robotisée assistée par des objets connectés.
 * Flavien Vernier
 * Sebastien Monnet
 * Jean-Jacques Curtelin
+* Sorana Cimpan
 
 ## Liens GitHub des projets précédents
 Téléprésence robotisée :
@@ -32,6 +33,3 @@ Téléprésence robotisée :
 
 Télésurveillance robotisée :
 > https://github.com/PacRobotic/Watch_Bot
-
-
-Image RPi sur C: poubelle image.img
