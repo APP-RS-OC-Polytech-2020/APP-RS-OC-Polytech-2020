@@ -2,29 +2,49 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import org.opencv.core.Core;
+import org.opencv.core.CvException;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.objdetect.Objdetect;
-import org.opencv.videoio.VideoCapture;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.Result;
+import com.google.zxing.ResultPoint;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 
 public class Window extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private CameraGrabber cam;
 	private Thread camThread=null;
 	private boolean camIsRunning;
@@ -33,9 +53,6 @@ public class Window extends JFrame{
 	private JButton button;
 	private MyCanvas canvas;
 	
-	private int absoluteBodySize;
-	private CascadeClassifier bodyCascade;
-	
 	public Window(){
 		init();
 	}
@@ -43,10 +60,9 @@ public class Window extends JFrame{
 		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 		System.out.println("Open CV Processor Loaded");
 		
-		this.absoluteBodySize=0;
-		
 		this.frame=new JFrame();
 		this.frame.addWindowListener(new WindowAdapter(){
+			@SuppressWarnings("deprecation")
 			public void windowClosing(WindowEvent arg0){
 				if(camIsRunning){
 					camIsRunning=false;
@@ -69,6 +85,7 @@ public class Window extends JFrame{
 		this.button=new JButton("Start");
 		this.button.setBounds(408,11,90,75);
 		this.button.addActionListener(new ActionListener(){
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e){
 				if (camThread == null) {
 					camThread = new Thread() {
@@ -99,7 +116,7 @@ public class Window extends JFrame{
 								}
 								
 								// detect full bodies
-								this.bodyCascade=new CascadeClassifier("/home/pi/opencv/opencv-4.0.0/data/haarcascades/haarcascade_fullbody.xml");
+								this.bodyCascade=new CascadeClassifier("/home/pi/opencv/opencv-4.0.0/data/haarcascades/haarcascade_lowerbody.xml");
 								((CascadeClassifier) this.bodyCascade).detectMultiScale(grayFrame, bodies, 1.1, 2, 0 | Objdetect.CASCADE_SCALE_IMAGE, new Size(this.absoluteBodySize, this.absoluteBodySize), new Size());
 										
 								// draw rectangles
@@ -112,8 +129,42 @@ public class Window extends JFrame{
 								
 								BufferedImage bufImg = new BufferedImage(matImg.cols(), matImg.rows(), BufferedImage.TYPE_3BYTE_BGR);
 								matImg.get(0, 0, ((DataBufferByte)bufImg.getRaster().getDataBuffer()).getData());
-								canvas.setImage(bufImg);
+								
+								
+								
+							
+								BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(bufImg)));
+								
+								
+								
+								Result qrCodeResult;
+								try {
+									qrCodeResult = new MultiFormatReader().decode(binaryBitmap);
+									
+									//Phase test voir ce que donne points
+									float scaleFactor=2;
+									ResultPoint[] points = qrCodeResult.getResultPoints();
+									System.out.println("Info Image totale:  Largeur : "+ bufImg.getWidth() + " Longueur : " + bufImg.getHeight());
+									for (int i = 0; i < points.length; i++) {
+										System.out.println(points[i]);
+									}
+									if(points.length>3){
+										Point topleft = new Point(points[1].getX(), points[1].getY());
+										Point bottomRight = new Point(points[3].getX(), points[3].getY());
+										Imgproc.rectangle(matImg, topleft, bottomRight, new Scalar(0, 255, 0), 3);
+										bufImg = new BufferedImage(matImg.cols(), matImg.rows(), BufferedImage.TYPE_3BYTE_BGR);
+										matImg.get(0, 0, ((DataBufferByte)bufImg.getRaster().getDataBuffer()).getData());
+									}
+									System.out.println(qrCodeResult.getText());
+								} catch (NotFoundException e1) {
+									//e1.printStackTrace();
+								}
+								
+								
+								canvas.setImage(bufImg);														
 								canvas.repaint();
+								
+								//System.out.println("FPS: "+cam.getFps());
 									
 								try {
 									Thread.sleep(cam.CameraGetFps());
@@ -141,8 +192,11 @@ public class Window extends JFrame{
 		this.frame.getContentPane().add(button);
 	}
 	private class MyCanvas extends Canvas{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private BufferedImage img = null;
-		 private Graphics g = null;
 
 	      public MyCanvas () {
 	         setBackground (Color.GRAY);
@@ -164,10 +218,6 @@ public class Window extends JFrame{
 	      
 	      public void setImage(BufferedImage img) {
 	    	  this.img = img;
-	      }
-	      
-	      public Graphics getG() {
-	    	  return this.g ;
 	      }
 	}
 	
