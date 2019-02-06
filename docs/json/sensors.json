@@ -1,0 +1,10 @@
+{
+    "type": "sensors",
+    "data": {
+        "temperature": 0,
+        "humidity": 0,
+        "smoke": 0
+    },
+    "name": "",	
+    "macAddress": ""
+}
