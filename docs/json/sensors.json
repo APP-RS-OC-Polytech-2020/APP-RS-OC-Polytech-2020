@@ -6,5 +6,8 @@
         "smoke": 0
     },
     "name": "",	
-    "macAddress": ""
+    "macAddress": "",
+    "user": {
+        "email": ""
+    }
 }
