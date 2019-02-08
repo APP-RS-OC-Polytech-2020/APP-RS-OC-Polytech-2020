@@ -1,0 +1,9 @@
+{
+    "type": "laser",
+    "trigger": 1,
+    "name": "",	
+    "macAddress": "",
+    "user": {
+        "email": ""
+    }
+}
